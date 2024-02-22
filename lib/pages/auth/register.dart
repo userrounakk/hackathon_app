@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
-import 'package:hackathon_app/helpers/images.dart';
 import 'package:hackathon_app/helpers/text.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   bool visibility = false;
+  bool confirmPasswordVisibility = false;
+  final nameController = TextEditingController();
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -29,17 +33,55 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 40,
-              ),
-              SizedBox(
-                child: Center(child: Image.asset(Images.logo)),
-              ),
-              const SizedBox(
                 height: 60,
               ),
               Text(
-                "Login to your account",
+                "Create an account",
                 style: headingStyle(),
+              ),
+
+              const SizedBox(
+                height: 40,
+              ),
+
+              // Name
+              TextFormField(
+                controller: nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Name",
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: themeColor),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 40,
+              ),
+
+              // Username
+              TextFormField(
+                controller: usernameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: "Username",
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: themeColor),
+                  ),
+                ),
               ),
 
               const SizedBox(
@@ -52,6 +94,10 @@ class _LoginState extends State<Login> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
+                  }
+                  // check for a valid email
+                  if (!value.contains('@')) {
+                    return 'Please enter a valid email';
                   }
                   return null;
                 },
@@ -97,10 +143,51 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+
               const SizedBox(
                 height: 40,
               ),
-              // Login Button
+
+              // Confirm Password
+              TextFormField(
+                controller: confirmPasswordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+                obscureText: !confirmPasswordVisibility,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        confirmPasswordVisibility = !confirmPasswordVisibility;
+                      });
+                    },
+                    icon: Icon(
+                      confirmPasswordVisibility
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: themeColor,
+                    ),
+                  ),
+                  labelText: "Confirm Password",
+                  border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: themeColor),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 40,
+              ),
+
+              // Register Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -114,7 +201,7 @@ class _LoginState extends State<Login> {
                       print(passwordController.text);
                     }
                   },
-                  child: const Text("Login"),
+                  child: const Text("Register"),
                 ),
               ),
 
@@ -122,17 +209,17 @@ class _LoginState extends State<Login> {
                 height: 40,
               ),
 
-              // Register
+              // Login
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account? ", style: normal()),
+                  Text("Already have an account? ", style: normal()),
                   GestureDetector(
                     onTap: () {
-                      print("Register");
+                      print("Login");
                     },
                     child: Text(
-                      "Register",
+                      "Login",
                       style: TextStyle(
                         fontSize: 18,
                         color: themeColor,
