@@ -12,9 +12,9 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dashboard"),
+        title: const Text("Dashboard"),
       ),
-      body: Center(
+      body: const Center(
         child: Text("Welcome to the Dashboard"),
       ),
     );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/api/api.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/images.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'register.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,7 +13,39 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+String errorMessage = '';
+bool isLoginFailed = false;
+
 class _LoginState extends State<Login> {
+  void login() async {
+    var response = await Api.login(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+
+    if (response.toString() == "User Not Found") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Login Failed'),
+            content: Text('Incorrect email or password'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      print("User Found");
+    }
+  }
+
   bool visibility = false;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -112,6 +146,7 @@ class _LoginState extends State<Login> {
                     if (_formKey.currentState!.validate()) {
                       print(emailController.text);
                       print(passwordController.text);
+                      login();
                     }
                   },
                   child: const Text("Login"),
@@ -129,7 +164,11 @@ class _LoginState extends State<Login> {
                   Text("Don't have an account? ", style: normal()),
                   GestureDetector(
                     onTap: () {
-                      print("Register");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Register()),
+                      );
                     },
                     child: Text(
                       "Register",

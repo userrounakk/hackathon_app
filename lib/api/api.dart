@@ -6,22 +6,23 @@ const String baseUrl = 'http://localhost:3000';
 
 class Api {
   static Future<Response> register(
-      {required String name,
-      required String username,
+      {required String username,
       required String email,
       required String password}) async {
     try {
-      final response = await dio.post(
-        '$baseUrl/register',
-        data: {
-          'name': name,
-          'username': username,
-          'email': email,
-          'password': password,
-        },
-      );
+      final response = await dio.post('$baseUrl/signup',
+          data: {
+            'username': username,
+            'email': email,
+            'password': password,
+          },
+          options: Options(
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+          ));
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return e.response!;
     }
   }
@@ -29,15 +30,18 @@ class Api {
   static Future<Response> login(
       {required String email, required String password}) async {
     try {
-      final response = await dio.post(
-        '$baseUrl/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
-      );
+      final response = await dio.post('$baseUrl/login',
+          data: {
+            'email': email,
+            'password': password,
+          },
+          options: Options(
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+          ));
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return e.response!;
     }
   }

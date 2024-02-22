@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/api/api.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'login.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -10,7 +12,36 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+void signup() async {
+  var response = await Api.register(
+    email: emailController.text,
+    password: passwordController.text,
+    username: usernameController.text,
+  );
+
+  if (response.statusCode == 200) { // assuming 200 is a successful response
+    showDialog(
+      context: conte, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Registration Successful'),
+          content: Text('You have successfully registered'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    print(response);
+  }
+}
+
   bool visibility = false;
   bool confirmPasswordVisibility = false;
   final nameController = TextEditingController();
@@ -196,9 +227,11 @@ class _RegisterState extends State<Register> {
                     backgroundColor: MaterialStateProperty.all(themeColor),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState != null &&
+                        _formKey.currentState!.validate()) {
                       print(emailController.text);
                       print(passwordController.text);
+                      signup();
                     }
                   },
                   child: const Text("Register"),
@@ -216,7 +249,10 @@ class _RegisterState extends State<Register> {
                   Text("Already have an account? ", style: normal()),
                   GestureDetector(
                     onTap: () {
-                      print("Login");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
                     },
                     child: Text(
                       "Login",
