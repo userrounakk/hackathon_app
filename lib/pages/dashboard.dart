@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'package:hackathon_app/pages/leaderboard.dart';
+import 'package:hackathon_app/pages/profile.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class Dashboard extends StatefulWidget {
@@ -58,10 +60,19 @@ class _DashboardState extends State<Dashboard> {
                       style: headingStyle(),
                     ),
                     const Spacer(),
-                    const CircleAvatar(
-                      radius: 30,
-                      backgroundImage:
-                          NetworkImage("https://picsum.photos/200"),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Profile()),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 30,
+                        backgroundImage:
+                            NetworkImage("https://picsum.photos/200"),
+                      ),
                     ),
                   ],
                 ),
@@ -154,15 +165,35 @@ class _DashboardState extends State<Dashboard> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.leaderboard,
-                                  size: 80,
-                                  color: themeColor,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LeaderBoard()),
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.leaderboard,
+                                    size: 80,
+                                    color: themeColor,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
-                                const Text(
-                                  "Leaderboard",
-                                  style: TextStyle(fontSize: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LeaderBoard()),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Leaderboard",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                                 )
                               ],
                             ),

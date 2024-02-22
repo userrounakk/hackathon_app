@@ -40,7 +40,7 @@ class Api {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
           ));
-
+      print(response.data[2]);
       return response;
     } on DioException catch (e) {
       return e.response!;

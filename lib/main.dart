@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: "Hackathon Project",
-      home: const Dashboard(),
+      home: const Login(),
       theme: ThemeData(
         brightness: Brightness.dark,
       ),

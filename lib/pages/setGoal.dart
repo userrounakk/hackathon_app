@@ -3,6 +3,7 @@ import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/text.dart';
 import 'package:dio/dio.dart';
+import 'package:hackathon_app/pages/dashboard.dart';
 
 final dio = Dio();
 
@@ -99,6 +100,10 @@ class _SetGoalsState extends State<SetGoals> {
               child: ElevatedButton(
                 onPressed: () {
                   getHttp();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                  );
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(themeColor),
