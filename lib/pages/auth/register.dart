@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/api/api.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'login.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -11,6 +13,15 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  void signup() async {
+    var response = await Api.register(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
+    );
+    print(response);
+  }
+
   bool visibility = false;
   bool confirmPasswordVisibility = false;
   final nameController = TextEditingController();
@@ -196,9 +207,11 @@ class _RegisterState extends State<Register> {
                     backgroundColor: MaterialStateProperty.all(themeColor),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState != null &&
+                        _formKey.currentState!.validate()) {
                       print(emailController.text);
                       print(passwordController.text);
+                      signup();
                     }
                   },
                   child: const Text("Register"),
@@ -216,7 +229,10 @@ class _RegisterState extends State<Register> {
                   Text("Already have an account? ", style: normal()),
                   GestureDetector(
                     onTap: () {
-                      print("Login");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
                     },
                     child: Text(
                       "Login",
