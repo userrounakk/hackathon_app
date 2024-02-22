@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   dio: ^5.4.1
+  step_progress_indicator: ^1.0.2
 
 dev_dependencies:
   flutter_test:
