@@ -12,35 +12,15 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-void signup() async {
-  var response = await Api.register(
-    email: emailController.text,
-    password: passwordController.text,
-    username: usernameController.text,
-  );
-
-  if (response.statusCode == 200) { // assuming 200 is a successful response
-    showDialog(
-      context: conte, 
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Registration Successful'),
-          content: Text('You have successfully registered'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+class _RegisterState extends State<Register> {
+  void signup() async {
+    var response = await Api.register(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
     );
-  } else {
     print(response);
   }
-}
 
   bool visibility = false;
   bool confirmPasswordVisibility = false;

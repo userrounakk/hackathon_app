@@ -4,6 +4,7 @@ import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/images.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'package:hackathon_app/pages/setGoal.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
@@ -42,7 +43,11 @@ class _LoginState extends State<Login> {
         },
       );
     } else {
-      print("User Found");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SetGoals()),
+      );
+      // print("User Found");
     }
   }
 
@@ -71,9 +76,11 @@ class _LoginState extends State<Login> {
               const SizedBox(
                 height: 60,
               ),
-              Text(
-                "Login to your account",
-                style: headingStyle(),
+              Center(
+                child: Text(
+                  "Login to your account",
+                  style: headingStyle(),
+                ),
               ),
 
               const SizedBox(

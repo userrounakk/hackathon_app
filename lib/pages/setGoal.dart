@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_app/helpers/colors.dart';
 import 'package:hackathon_app/helpers/dimension.dart';
 import 'package:hackathon_app/helpers/text.dart';
+import 'package:dio/dio.dart';
+
+final dio = Dio();
+
+Future<List<String>> getHttp() async {
+  var response = await dio.get('http://localhost:3000/user/choices');
+  List<String> topics = [];
+  response.data.forEach((topic) => topics.add(topic['topic']));
+  return topics;
+}
 
 class SetGoals extends StatefulWidget {
   const SetGoals({super.key});
@@ -11,6 +21,14 @@ class SetGoals extends StatefulWidget {
 }
 
 class _SetGoalsState extends State<SetGoals> {
+  Future<List<String>>? futureTopics;
+
+  @override
+  void initState() {
+    super.initState();
+    futureTopics = getHttp();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +48,7 @@ class _SetGoalsState extends State<SetGoals> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: "Enter your goal",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: themeColor),
                 ),
@@ -39,42 +57,53 @@ class _SetGoalsState extends State<SetGoals> {
             const SizedBox(
               height: 40,
             ),
-            Text(
+            const Text(
               "Or choose one from below",
               style: TextStyle(fontSize: 22),
             ),
             const SizedBox(
               height: 20,
             ),
-            Wrap(
-              spacing: 10,
-              children: [
-                const Chip(
-                  label: Text("Lose weight"),
-                ),
-                const Chip(
-                  label: Text("Gain weight"),
-                ),
-                const Chip(
-                  label: Text("Stay fit"),
-                ),
-                const Chip(
-                  label: Text("Lose weight"),
-                ),
-              ],
+            FutureBuilder<List<String>>(
+              future: futureTopics,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  // Check if snapshot.data is null before trying to map it
+                  if (snapshot.data != null) {
+                    return Wrap(
+                      spacing: 10,
+                      children: snapshot.data!
+                          .map((topic) => GestureDetector(
+                                child: Chip(
+                                  label: Text(
+                                    topic,
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    );
+                  } else {
+                    return const Text('No data');
+                  }
+                }
+              },
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Proceed"),
+                onPressed: () {
+                  getHttp();
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(themeColor),
                 ),
+                child: const Text("Proceed"),
               ),
             ),
           ],
