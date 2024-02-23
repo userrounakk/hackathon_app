@@ -40,7 +40,8 @@ class Api {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
           ));
-      print(response.data[2]);
+      var data = response.data['token'];
+
       return response;
     } on DioException catch (e) {
       return e.response!;

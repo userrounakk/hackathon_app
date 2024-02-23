@@ -212,6 +212,10 @@ class _RegisterState extends State<Register> {
                       print(emailController.text);
                       print(passwordController.text);
                       signup();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
                     }
                   },
                   child: const Text("Register"),

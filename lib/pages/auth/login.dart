@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
             content: Text('Incorrect email or password'),
             actions: <Widget>[
               TextButton(
-                child: Text('Close'),
+                child: const Text('Close'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -47,7 +47,6 @@ class _LoginState extends State<Login> {
         context,
         MaterialPageRoute(builder: (context) => const SetGoals()),
       );
-      // print("User Found");
     }
   }
 
